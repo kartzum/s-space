@@ -17,3 +17,6 @@ Applications using Apache Kafka.
 
 ### WordCount
 Word Count example.
+
+### ScConsumer
+Sync control Consumer.
