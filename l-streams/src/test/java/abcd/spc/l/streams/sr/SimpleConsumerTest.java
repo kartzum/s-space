@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SimpleConsumerTest {
     @Test
     void test() {
-        try (KafkaServerService service = new KafkaServerService()) {
+        try (KafkaServerService service = new KafkaServerService("127.0.0.1", 19092)) {
             String topic = "topic";
             String message = "message";
             service.start();

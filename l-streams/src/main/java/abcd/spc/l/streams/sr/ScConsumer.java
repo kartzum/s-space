@@ -88,7 +88,7 @@ public class ScConsumer {
         });
     }
 
-    static class ScConsumerLoop extends BaseSyncControlConsumerLoop<String, String> {
+    static class ScConsumerLoop extends BaseStringStringSyncControlConsumerLoop {
         ScConsumerLoop(
                 String id,
                 String appId,
@@ -101,17 +101,7 @@ public class ScConsumer {
         }
 
         @Override
-        String keyDeserializer() {
-            return "org.apache.kafka.common.serialization.StringDeserializer";
-        }
-
-        @Override
-        String valueDeserializer() {
-            return "org.apache.kafka.common.serialization.StringDeserializer";
-        }
-
-        @Override
-        void calculate(ConsumerRecords<String, String> consumerRecords) {
+        protected void calculate(ConsumerRecords<String, String> consumerRecords) {
             for (ConsumerRecord<String, String> record : consumerRecords) {
                 Map<String, Object> data = new HashMap<>();
                 data.put("key", record.key());

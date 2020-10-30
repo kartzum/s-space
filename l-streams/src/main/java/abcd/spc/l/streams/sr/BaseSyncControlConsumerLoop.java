@@ -17,7 +17,7 @@ public abstract class BaseSyncControlConsumerLoop<K, V> implements Runnable {
     String bootstrapServers;
     List<String> inputTopics;
 
-    BaseSyncControlConsumerLoop(
+    public BaseSyncControlConsumerLoop(
             String id,
             String appId,
             String clientId,
@@ -42,7 +42,7 @@ public abstract class BaseSyncControlConsumerLoop<K, V> implements Runnable {
         try {
             consumer.subscribe(inputTopics);
             while (true) {
-                ConsumerRecords<K, V> consumerRecords = consumer.poll(Duration.ZERO);
+                ConsumerRecords<K, V> consumerRecords = consumer.poll(Duration.ofSeconds(5));
                 calculate(consumerRecords);
                 consumer.commitSync();
             }
@@ -59,11 +59,11 @@ public abstract class BaseSyncControlConsumerLoop<K, V> implements Runnable {
         }
     }
 
-    KafkaConsumer<K, V> createConsumer() {
+    protected KafkaConsumer<K, V> createConsumer() {
         return new KafkaConsumer<>(createProperties());
     }
 
-    Properties createProperties() {
+    protected Properties createProperties() {
         Properties properties = new Properties();
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
@@ -76,9 +76,9 @@ public abstract class BaseSyncControlConsumerLoop<K, V> implements Runnable {
         return properties;
     }
 
-    abstract String keyDeserializer();
+    protected abstract String keyDeserializer();
 
-    abstract String valueDeserializer();
+    protected abstract String valueDeserializer();
 
-    abstract void calculate(ConsumerRecords<K, V> consumerRecords);
+    protected abstract void calculate(ConsumerRecords<K, V> consumerRecords);
 }

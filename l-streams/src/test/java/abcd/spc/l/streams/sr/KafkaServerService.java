@@ -13,20 +13,24 @@ import org.I0Itec.zkclient.ZkClient;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
-public class KafkaServerService implements Closeable {
+public class KafkaServerService implements AutoCloseable {
     String zkHost = "127.0.0.1";
-    String brokerHost = "127.0.0.1";
-    int brokerPort = 19092;
+    String brokerHost;
+    int brokerPort;
 
     KafkaServer kafkaServer;
     ZkClient zkClient;
     EmbeddedZookeeper zkServer;
     ZkUtils zkUtils;
+
+    KafkaServerService(String brokerHost, int brokerPort) {
+        this.brokerHost = brokerHost;
+        this.brokerPort = brokerPort;
+    }
 
     public void start() {
         zkServer = new EmbeddedZookeeper();
@@ -69,6 +73,14 @@ public class KafkaServerService implements Closeable {
         producerProps.setProperty("key.serializer", "org.apache.kafka.common.serialization.IntegerSerializer");
         producerProps.setProperty("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
         return new KafkaProducer<Integer, byte[]>(producerProps);
+    }
+
+    public KafkaProducer<String, String> createKafkaProducerStringString() {
+        Properties producerProps = new Properties();
+        producerProps.setProperty("bootstrap.servers", brokerHost + ":" + brokerPort);
+        producerProps.setProperty("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        producerProps.setProperty("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        return new KafkaProducer<String, String>(producerProps);
     }
 
     public KafkaConsumer<Integer, byte[]> createKafkaConsumerIntegerByteArray() {
