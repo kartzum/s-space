@@ -22,30 +22,28 @@ public class GitLabService {
     public List<Variable> getVariablesByProjectId(String projectId) {
         List<Variable> result = new ArrayList<>();
         String url = baseUrl + "projects/" + projectId + "/variables";
-        Optional<String> response = service.get(url, (c) -> {
+        String response = service.get(url, (c) -> {
             service.prepareConnectionForJson(c);
             c.setRequestProperty("PRIVATE-TOKEN", token);
         });
-        if (response.isPresent()) {
-            JSONParser jsonParser = new JSONParser();
-            try {
-                JSONArray jsonArray = (JSONArray) jsonParser.parse(response.get());
-                for (Object arrayItem : jsonArray) {
-                    JSONObject jsonObject = (JSONObject) arrayItem;
-                    Object key = jsonObject.get("key");
-                    Object value = jsonObject.get("value");
-                    if (key != null) {
-                        String valueAsString = null;
-                        if (value != null) {
-                            valueAsString = value.toString();
-                        }
-                        Variable variable = new Variable(key.toString(), valueAsString);
-                        result.add(variable);
+        JSONParser jsonParser = new JSONParser();
+        try {
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(response);
+            for (Object arrayItem : jsonArray) {
+                JSONObject jsonObject = (JSONObject) arrayItem;
+                Object key = jsonObject.get("key");
+                Object value = jsonObject.get("value");
+                if (key != null) {
+                    String valueAsString = null;
+                    if (value != null) {
+                        valueAsString = value.toString();
                     }
+                    Variable variable = new Variable(key.toString(), valueAsString);
+                    result.add(variable);
                 }
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
             }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
         return result;
     }
@@ -56,7 +54,7 @@ public class GitLabService {
         map.put("key", variableKey);
         map.put("value", variableValue);
         String data = JSONObject.toJSONString(map);
-        Optional<String> response = service.post(url, (c) -> {
+        service.post(url, (c) -> {
             try {
                 service.prepareConnectionForJson(c);
                 c.setRequestProperty("PRIVATE-TOKEN", token);
@@ -76,7 +74,7 @@ public class GitLabService {
         map.put("key", variableKey);
         map.put("value", variableValue);
         String data = JSONObject.toJSONString(map);
-        Optional<String> response = service.put(url, (c) -> {
+        service.put(url, (c) -> {
             try {
                 service.prepareConnectionForJson(c);
                 c.setRequestProperty("PRIVATE-TOKEN", token);
@@ -85,6 +83,19 @@ public class GitLabService {
                 os.write(data.getBytes(StandardCharsets.UTF_8));
                 os.close();
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void deleteVariable(String projectId, String variableKey) {
+        String url = baseUrl + "projects/" + projectId + "/variables/" + variableKey;
+        service.delete(url, (c) -> {
+            try {
+                service.prepareConnectionForJson(c);
+                c.setRequestProperty("PRIVATE-TOKEN", token);
+                c.setDoOutput(true);
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });

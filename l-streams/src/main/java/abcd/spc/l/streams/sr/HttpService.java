@@ -5,20 +5,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class HttpService {
-    public Optional<String> get(String url, Consumer<HttpURLConnection> connectionHandler) {
+    public String get(String url, Consumer<HttpURLConnection> connectionHandler) {
         return op(url, "GET", connectionHandler);
     }
 
-    public Optional<String> post(String url, Consumer<HttpURLConnection> connectionHandler) {
-        return op(url, "POST", connectionHandler);
+    public void post(String url, Consumer<HttpURLConnection> connectionHandler) {
+        op(url, "POST", connectionHandler);
     }
 
-    public Optional<String> put(String url, Consumer<HttpURLConnection> connectionHandler) {
-        return op(url, "PUT", connectionHandler);
+    public void put(String url, Consumer<HttpURLConnection> connectionHandler) {
+        op(url, "PUT", connectionHandler);
+    }
+
+    public void delete(String url, Consumer<HttpURLConnection> connectionHandler) {
+        op(url, "DELETE", connectionHandler);
     }
 
     public void prepareConnectionForJson(HttpURLConnection connection) {
@@ -26,7 +29,7 @@ public class HttpService {
         connection.setRequestProperty("Accept", "application/json");
     }
 
-    Optional<String> op(String url, String method, Consumer<HttpURLConnection> connectionHandler) {
+    String op(String url, String method, Consumer<HttpURLConnection> connectionHandler) {
         StringBuilder response = new StringBuilder();
         try {
             URL u = new URL(url);
@@ -42,8 +45,9 @@ public class HttpService {
                 }
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return Optional.of(response.toString());
+        return response.toString();
     }
 
 }
