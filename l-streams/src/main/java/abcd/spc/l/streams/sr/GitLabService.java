@@ -5,9 +5,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
 
 public class GitLabService {
     HttpService service = new HttpService();
@@ -47,6 +47,25 @@ public class GitLabService {
             }
         }
         return result;
+    }
+
+    public void createVariable(String projectId, String variableKey, String variableValue) {
+        String url = baseUrl + "projects/" + projectId + "/variables";
+        Map<String, String> map = new HashMap<>();
+        map.put("key", variableKey);
+        map.put("value", variableValue);
+        String data = JSONObject.toJSONString(map);
+        Optional<String> response = service.post(url, (c) -> {
+            try {
+                service.prepareConnectionForJson(c);
+                c.setRequestProperty("PRIVATE-TOKEN", token);
+                c.setDoOutput(true);
+                OutputStream os = c.getOutputStream();
+                os.write(data.getBytes("UTF-8"));
+                os.close();
+            } catch (IOException e) {
+            }
+        });
     }
 
     static class Variable {

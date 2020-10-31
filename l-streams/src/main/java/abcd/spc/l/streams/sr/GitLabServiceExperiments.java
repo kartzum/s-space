@@ -4,7 +4,8 @@ import java.util.List;
 
 public class GitLabServiceExperiments {
     public static void main(String[] args) {
-        getVariablesByProjectId();
+        // getVariablesByProjectId();
+        createVariable();
     }
 
     static void getVariablesByProjectId() {
@@ -17,5 +18,10 @@ public class GitLabServiceExperiments {
 
     static String getGitLabToken() {
         return System.getenv().get("GITLAB_TOKEN");
+    }
+
+    static void createVariable() {
+        GitLabService service = new GitLabService(getGitLabToken());
+        service.createVariable("20521468", "M_KEY", "M_VALUE");
     }
 }

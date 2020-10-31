@@ -33,4 +33,24 @@ public class HttpService {
         connection.setRequestProperty("Content-Type", "application/json; utf-8");
         connection.setRequestProperty("Accept", "application/json");
     }
+
+    public Optional<String> post(String url, Consumer<HttpURLConnection> connectionHandler) {
+        StringBuilder response = new StringBuilder();
+        try {
+            URL u = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+            connection.setRequestMethod("POST");
+            connectionHandler.accept(connection);
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String responseLine;
+                while ((responseLine = reader.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+            }
+        } catch (IOException e) {
+        }
+        return Optional.of(response.toString());
+    }
 }
