@@ -18,9 +18,9 @@ public class GitLabService {
         this.token = token;
     }
 
-    public List<Variable> getVariablesByProjectId(String id) {
+    public List<Variable> getVariablesByProjectId(String projectId) {
         List<Variable> result = new ArrayList<>();
-        String url = baseUrl + "projects/" + id + "/variables";
+        String url = baseUrl + "projects/" + projectId + "/variables";
         Optional<String> response = service.get(url, (c) -> {
             service.prepareConnectionForJson(c);
             c.setRequestProperty("PRIVATE-TOKEN", token);
