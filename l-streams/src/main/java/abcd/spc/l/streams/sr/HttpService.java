@@ -10,23 +10,15 @@ import java.util.function.Consumer;
 
 public class HttpService {
     public Optional<String> get(String url, Consumer<HttpURLConnection> connectionHandler) {
-        StringBuilder response = new StringBuilder();
-        try {
-            URL u = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-            connection.setRequestMethod("GET");
-            connectionHandler.accept(connection);
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String responseLine;
-                while ((responseLine = reader.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-            }
-        } catch (IOException e) {
-        }
-        return Optional.of(response.toString());
+        return op(url, "GET", connectionHandler);
+    }
+
+    public Optional<String> post(String url, Consumer<HttpURLConnection> connectionHandler) {
+        return op(url, "POST", connectionHandler);
+    }
+
+    public Optional<String> put(String url, Consumer<HttpURLConnection> connectionHandler) {
+        return op(url, "PUT", connectionHandler);
     }
 
     public void prepareConnectionForJson(HttpURLConnection connection) {
@@ -34,12 +26,12 @@ public class HttpService {
         connection.setRequestProperty("Accept", "application/json");
     }
 
-    public Optional<String> post(String url, Consumer<HttpURLConnection> connectionHandler) {
+    Optional<String> op(String url, String method, Consumer<HttpURLConnection> connectionHandler) {
         StringBuilder response = new StringBuilder();
         try {
             URL u = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(method);
             connectionHandler.accept(connection);
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -53,4 +45,5 @@ public class HttpService {
         }
         return Optional.of(response.toString());
     }
+
 }

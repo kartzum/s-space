@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class GitLabService {
@@ -61,9 +62,30 @@ public class GitLabService {
                 c.setRequestProperty("PRIVATE-TOKEN", token);
                 c.setDoOutput(true);
                 OutputStream os = c.getOutputStream();
-                os.write(data.getBytes("UTF-8"));
+                os.write(data.getBytes(StandardCharsets.UTF_8));
                 os.close();
             } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void updateVariable(String projectId, String variableKey, String variableValue) {
+        String url = baseUrl + "projects/" + projectId + "/variables/" + variableKey;
+        Map<String, String> map = new HashMap<>();
+        map.put("key", variableKey);
+        map.put("value", variableValue);
+        String data = JSONObject.toJSONString(map);
+        Optional<String> response = service.put(url, (c) -> {
+            try {
+                service.prepareConnectionForJson(c);
+                c.setRequestProperty("PRIVATE-TOKEN", token);
+                c.setDoOutput(true);
+                OutputStream os = c.getOutputStream();
+                os.write(data.getBytes(StandardCharsets.UTF_8));
+                os.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }

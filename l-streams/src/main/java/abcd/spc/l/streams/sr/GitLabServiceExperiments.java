@@ -5,7 +5,8 @@ import java.util.List;
 public class GitLabServiceExperiments {
     public static void main(String[] args) {
         // getVariablesByProjectId();
-        createVariable();
+        // createVariable();
+        updateVariable();
     }
 
     static void getVariablesByProjectId() {
@@ -23,5 +24,10 @@ public class GitLabServiceExperiments {
     static void createVariable() {
         GitLabService service = new GitLabService(getGitLabToken());
         service.createVariable("20521468", "M_KEY", "M_VALUE");
+    }
+
+    static void updateVariable() {
+        GitLabService service = new GitLabService(getGitLabToken());
+        service.updateVariable("20521468", "M_KEY", "M_VALUE_2");
     }
 }
