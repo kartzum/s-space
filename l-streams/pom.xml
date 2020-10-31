@@ -18,6 +18,7 @@
         <junit-platform-runner.version>1.5.2</junit-platform-runner.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
         <scala.version>2.12</scala.version>
+        <json-simple.version>1.1.1</json-simple.version>
     </properties>
 
     <dependencies>
@@ -81,6 +82,11 @@
             <version>${kafka.version}</version>
             <scope>test</scope>
             <classifier>test</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${json-simple.version}</version>
         </dependency>
     </dependencies>
 
