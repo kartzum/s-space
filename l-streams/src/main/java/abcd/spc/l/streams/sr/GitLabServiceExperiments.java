@@ -8,6 +8,7 @@ public class GitLabServiceExperiments {
         // createVariable();
         // updateVariable();
         // deleteVariable();
+        getProjects();
     }
 
     static void getVariablesByProjectId() {
@@ -35,5 +36,13 @@ public class GitLabServiceExperiments {
     static void deleteVariable() {
         GitLabService service = new GitLabService(getGitLabToken());
         service.deleteVariable("20521468", "M_KEY");
+    }
+
+    static void getProjects() {
+        GitLabService service = new GitLabService(getGitLabToken());
+        List<GitLabService.Project> projects = service.getProjects();
+        projects.forEach((v) -> {
+            System.out.println(v.id + ": " + v.name);
+        });
     }
 }

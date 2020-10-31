@@ -101,6 +101,29 @@ public class GitLabService {
         });
     }
 
+    public List<Project> getProjects() {
+        List<Project> result = new ArrayList<>();
+        String url = baseUrl + "projects/?" + "owned=true";
+        String response = service.get(url, (c) -> {
+            service.prepareConnectionForJson(c);
+            c.setRequestProperty("PRIVATE-TOKEN", token);
+        });
+        JSONParser jsonParser = new JSONParser();
+        try {
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(response);
+            for (Object arrayItem : jsonArray) {
+                JSONObject jsonObject = (JSONObject) arrayItem;
+                Object id = jsonObject.get("id");
+                Object name = jsonObject.get("name");
+                Project project = new Project(id.toString(), name.toString());
+                result.add(project);
+            }
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
     static class Variable {
         String key;
         String value;
@@ -108,6 +131,16 @@ public class GitLabService {
         Variable(String key, String value) {
             this.key = key;
             this.value = value;
+        }
+    }
+
+    static class Project {
+        String id;
+        String name;
+
+        Project(String id, String name) {
+            this.id = id;
+            this.name = name;
         }
     }
 }
