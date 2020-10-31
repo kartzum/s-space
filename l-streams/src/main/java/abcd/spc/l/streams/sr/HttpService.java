@@ -6,16 +6,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class HttpService {
-    public Optional<String> getJson(String url) {
+    public Optional<String> get(String url, Consumer<HttpURLConnection> connectionHandler) {
         StringBuilder response = new StringBuilder();
         try {
             URL u = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setRequestProperty("Accept", "application/json");
+            connectionHandler.accept(connection);
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -27,5 +27,10 @@ public class HttpService {
         } catch (IOException e) {
         }
         return Optional.of(response.toString());
+    }
+
+    public void prepareConnectionForJson(HttpURLConnection connection) {
+        connection.setRequestProperty("Content-Type", "application/json; utf-8");
+        connection.setRequestProperty("Accept", "application/json");
     }
 }

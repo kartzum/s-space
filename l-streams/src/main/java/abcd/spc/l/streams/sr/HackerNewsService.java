@@ -14,7 +14,9 @@ public class HackerNewsService {
 
     List<String> fetchTopStoriesIds() {
         List<String> result = new ArrayList<>();
-        Optional<String> response = service.getJson(getTopStoriesUrl());
+        Optional<String> response = service.get(getTopStoriesUrl(), (c) -> {
+            service.prepareConnectionForJson(c);
+        });
         if (response.isPresent()) {
             JSONParser jsonParser = new JSONParser();
             try {
