@@ -4,6 +4,12 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.time.Duration;
 import java.util.*;
@@ -35,24 +41,21 @@ public class ActiveTasksApp {
                         "active_tasks",
                         "active_tasks",
                         bootstrapServers,
-                        Collections.singletonList(activeTasksTopic)
+                        activeTasksTopic
                 );
                 activeTasksConsumers.add(activeTasksLoop);
                 activeTasksExecutor.submit(activeTasksLoop);
             }
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                @Override
-                public void run() {
-                    for (ActiveTasksLoop consumer : activeTasksConsumers) {
-                        consumer.close();
-                    }
-                    activeTasksExecutor.shutdown();
-                    try {
-                        activeTasksExecutor.awaitTermination(5000, TimeUnit.MILLISECONDS);
-                    } catch (InterruptedException e) {
-                    }
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                for (ActiveTasksLoop consumer : activeTasksConsumers) {
+                    consumer.close();
                 }
-            });
+                activeTasksExecutor.shutdown();
+                try {
+                    activeTasksExecutor.awaitTermination(5000, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                }
+            }));
         }
 
         static class ActiveTasksLoop implements Runnable, AutoCloseable {
@@ -61,7 +64,7 @@ public class ActiveTasksApp {
             String clientId;
             String groupId;
             String bootstrapServers;
-            List<String> inputTopics;
+            String inputTopic;
 
             KafkaConsumer<String, String> consumer;
 
@@ -71,44 +74,57 @@ public class ActiveTasksApp {
                     String clientId,
                     String groupId,
                     String bootstrapServers,
-                    List<String> inputTopics
+                    String inputTopic
             ) {
                 this.id = id;
                 this.appId = appId;
                 this.clientId = clientId;
                 this.groupId = groupId;
                 this.bootstrapServers = bootstrapServers;
-                this.inputTopics = inputTopics;
+                this.inputTopic = inputTopic;
             }
 
             @Override
             public void run() {
-                consumer = new KafkaConsumer<>(createProperties());
-                consumer.subscribe(inputTopics);
+                consumer = activeTasksCreateConsumer(bootstrapServers, clientId, groupId);
+                consumer.subscribe(Collections.singleton(inputTopic));
                 while (true) {
                     ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(1));
                     for (ConsumerRecord<String, String> record : records) {
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("key", record.key());
-                        data.put("value", record.value());
-                        data.put("partition", record.partition());
-                        data.put("offset", record.offset());
-                        System.out.println(data);
+                        org.json.simple.parser.JSONParser jsonParser = new JSONParser();
+                        Object jsonObjectObject = null;
+                        try {
+                            jsonObjectObject = jsonParser.parse(record.value());
+                        } catch (ParseException e) {
+                        }
+                        if (jsonObjectObject != null) {
+                            JSONObject jsonObject = (JSONObject) jsonObjectObject;
+                            calcRecord(record.key(), jsonObject);
+                        }
                     }
                 }
             }
 
-            Properties createProperties() {
-                Properties consumerProperties = new Properties();
-                consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-                consumerProperties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
-                consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-                consumerProperties.setProperty(
-                        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-                consumerProperties.setProperty(
-                        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-                consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-                return consumerProperties;
+            void calcRecord(String key, JSONObject jsonObject) {
+                if (jsonObject.containsKey("type")) {
+                    String type = jsonObject.get("type").toString();
+                    switch (type) {
+                        case "operation_add":
+                            calcRecordAdd(key, jsonObject);
+                            break;
+                    }
+                }
+            }
+
+            void calcRecordAdd(String key, JSONObject jsonObject) {
+                double a = Double.parseDouble(jsonObject.get("a").toString());
+                double b = Double.parseDouble(jsonObject.get("b").toString());
+                double c = a + b;
+                send(operationResult(key, Double.toString(c)));
+            }
+
+            void send(String value) {
+                activeTasksSend(bootstrapServers, inputTopic, generateKey(), value);
             }
 
             @Override
@@ -122,5 +138,50 @@ public class ActiveTasksApp {
         @Override
         public void close() {
         }
+    }
+
+    static String generateKey() {
+        return UUID.randomUUID().toString();
+    }
+
+    static String operationAdd(double a, double b) {
+        Map<String, String> map = new HashMap<>();
+        map.put("type", "operation_add");
+        map.put("a", Double.toString(a));
+        map.put("b", Double.toString(b));
+        return JSONObject.toJSONString(map);
+    }
+
+    static String operationResult(String responseKey, String result) {
+        Map<String, String> map = new HashMap<>();
+        map.put("response_id", responseKey);
+        map.put("type", "operation_result");
+        map.put("result", result);
+        return JSONObject.toJSONString(map);
+    }
+
+    static void activeTasksSend(String bootstrapServers, String topic, String key, String value) {
+        Properties properties = new Properties();
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
+        ProducerRecord<String, String> data = new ProducerRecord<>(topic, key, value);
+        producer.send(data);
+        producer.flush();
+        producer.close();
+    }
+
+    static KafkaConsumer<String, String> activeTasksCreateConsumer(String bootstrapServers, String clientId, String groupId) {
+        Properties properties = new Properties();
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        properties.setProperty(
+                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.setProperty(
+                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        return new KafkaConsumer<>(properties);
     }
 }
