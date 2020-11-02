@@ -57,7 +57,7 @@ public class ScConsumer {
             String bootstrapServers,
             String inputTopic,
             String outputTopic,
-            String applId,
+            String appId,
             String clientId,
             String groupId,
             int numConsumers
@@ -68,7 +68,7 @@ public class ScConsumer {
         for (int i = 0; i < numConsumers; i++) {
             BaseSyncControlConsumerLoop<String, String> consumer =
                     new ScConsumerLoop(
-                            Integer.toString(i), applId, clientId, groupId, bootstrapServers, inputTopics);
+                            Integer.toString(i), appId, clientId, groupId, bootstrapServers, inputTopics);
             consumers.add(consumer);
             executor.submit(consumer);
         }
