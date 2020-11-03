@@ -1,4 +1,4 @@
-package abcd.spc.l.streams.sr;
+package abcd.spc.l.streams.sr.common;
 
 import kafka.admin.AdminUtils;
 import kafka.admin.RackAwareMode;

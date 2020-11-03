@@ -1,4 +1,4 @@
-package abcd.spc.l.streams.sr;
+package abcd.spc.l.streams.sr.common;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;

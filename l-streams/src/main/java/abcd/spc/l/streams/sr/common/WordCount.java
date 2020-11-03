@@ -1,4 +1,4 @@
-package abcd.spc.l.streams.sr;
+package abcd.spc.l.streams.sr.common;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;

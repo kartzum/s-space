@@ -1,4 +1,4 @@
-package abcd.spc.l.streams.sr;
+package abcd.spc.l.streams.sr.common;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

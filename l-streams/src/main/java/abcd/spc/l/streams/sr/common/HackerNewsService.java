@@ -1,4 +1,4 @@
-package abcd.spc.l.streams.sr;
+package abcd.spc.l.streams.sr.common;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
