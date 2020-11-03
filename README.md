@@ -2,7 +2,8 @@
 Services and examples
 
 ## l-streams
-Applications using Apache Kafka.
+
+### Applications using Apache Kafka
 
 ```
 ./bin/zookeeper-server-start.sh /data/kafka/kafka_2.12-2.3.0-1/config/zookeeper.properties
@@ -15,17 +16,25 @@ Applications using Apache Kafka.
 ./bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic q-data
 ```
 
-### WordCount
+#### WordCount
 Word Count example.
 
-### ScConsumer
+#### ScConsumer
 Sync control Consumer.
 
-### SpProducer.
+#### SpProducer
 Simple Producer.
 
-### ActiveTasksApp.
+#### ActiveTasksApp
 Active Tasks App.
 
-### TodoApp.
+#### TodoApp
 Todo App.
+
+### Jetty
+[Jetty](https://www.eclipse.org/jetty/documentation/current/index.html)
+
+#### SimplestServer
+[embedding-jetty](https://www.eclipse.org/jetty/documentation/current/embedding-jetty.html)
+
+Simplest Server.
