@@ -38,3 +38,14 @@ Todo App.
 [embedding-jetty](https://www.eclipse.org/jetty/documentation/current/embedding-jetty.html)
 
 Simplest Server.
+
+## fastapi-s
+[fastapi](https://fastapi.tiangolo.com/)
+
+```
+conda install -c conda-forge fastapi
+conda install -c conda-forge uvicorn
+```
+
+#### first-steps
+[first-steps](https://fastapi.tiangolo.com/tutorial/first-steps/)
