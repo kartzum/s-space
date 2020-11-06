@@ -52,3 +52,6 @@ conda install -c conda-forge uvicorn
 
 ### templates
 [templates](https://fastapi.tiangolo.com/advanced/templates/)
+
+### websockets
+[websockets](https://fastapi.tiangolo.com/advanced/websockets/)
