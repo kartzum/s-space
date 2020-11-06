@@ -49,3 +49,6 @@ conda install -c conda-forge uvicorn
 
 #### first-steps
 [first-steps](https://fastapi.tiangolo.com/tutorial/first-steps/)
+
+### templates
+[templates](https://fastapi.tiangolo.com/advanced/templates/)
