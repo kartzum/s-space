@@ -26,15 +26,38 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
+host = "localhost"
+port = 5672
 
-@app.websocket("/ws/{client_id}")
+
+def rm_send(topic, key, value):
+    import pika
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=host, port=port))
+    channel = connection.channel()
+    channel.queue_declare(queue=topic)
+    channel.basic_publish(exchange="", routing_key=topic, body=value)
+    connection.close()
+    return "ok"
+
+
+def send(topic, key, value):
+    return rm_send(topic, key, value)
+
+
+@app.websocket("/send/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{client_id} says: {data}")
+            data_array = data.split(":")
+            topic = data_array[0]
+            key = data_array[1]
+            value = data_array[2]
+            r = send(topic, key, value)
+            t = data + "," + r
+            await manager.send_personal_message(f"Data: {t}", websocket)
+            await manager.broadcast(f"Client #{client_id} says: {t}")
     except WebSocketDisconnect:
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} left the chat")
