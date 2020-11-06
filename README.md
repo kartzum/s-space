@@ -55,3 +55,21 @@ conda install -c conda-forge uvicorn
 
 ### websockets
 [websockets](https://fastapi.tiangolo.com/advanced/websockets/)
+
+### mq-proxy
+[websockets](https://websockets.readthedocs.io/en/stable/index.html)
+[rabbitmq-python](https://www.rabbitmq.com/tutorials/tutorial-one-python.html)
+[handling-disconnections-and-multiple-clients](https://fastapi.tiangolo.com/advanced/websockets/#handling-disconnections-and-multiple-clients)
+
+```
+https://www.rabbitmq.com/install-generic-unix.html
+brew install erlang
+```
+
+```
+conda install -c conda-forge pika
+```
+
+```
+sbin/rabbitmq-server
+```
