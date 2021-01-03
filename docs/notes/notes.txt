@@ -1,0 +1,8 @@
+---
+[micronaut](https://micronaut.io/index.html)
+[Введение в Micronaut Framework](https://habr.com/ru/post/418117/)
+[Пробуем Micronaut или Дорогая, я уменьшил фреймворк](https://habr.com/ru/post/427595/)
+[Когда стандарта HTTP мало. Коммитим в Micronaut](https://habr.com/ru/company/yandex/blog/466917/)
+https://micronaut-projects.github.io/micronaut-kafka/latest/guide/index.html
+https://docs.micronaut.io/snapshot/guide/index.html#introduction
+---
