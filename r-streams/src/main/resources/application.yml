@@ -1,0 +1,4 @@
+micronaut:
+  application:
+    name: abcdSpcRStreams
+kafka.bootstrap.servers: localhost:9092

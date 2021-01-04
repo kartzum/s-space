@@ -6,3 +6,21 @@
 https://micronaut-projects.github.io/micronaut-kafka/latest/guide/index.html
 https://docs.micronaut.io/snapshot/guide/index.html#introduction
 ---
+sdkman
+https://sdkman.io/install
+source "/Users/$USER/.sdkman/bin/sdkman-init.sh"
+source "/Users/kartzum/.sdkman/bin/sdkman-init.sh"
+sdk version
+---
+sdk install micronaut
+---
+https://docs.micronaut.io/snapshot/guide/index.html#creatingServer
+mn create-app hello-world
+./gradlew run
+---
+[Micronaut Tutorial: Reactive](https://piotrminkowski.com/2019/11/12/micronaut-tutorial-reactive/)
+[Non-blocking and async Micronaut - quick start (part 1)](https://e.printstacktrace.blog/micronaut-non-blocking-and-async-part1/)
+---
+https://micronaut-projects.github.io/micronaut-kafka/latest/guide/#introduction
+mn create-app my-kafka-app --features kafka
+---
