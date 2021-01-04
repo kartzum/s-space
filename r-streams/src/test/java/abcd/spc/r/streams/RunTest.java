@@ -27,14 +27,15 @@ public class RunTest {
     @Client("/")
     HttpClient client;
 
-    @Inject
-    RunCache runCache;
-
     @Test
     void test() throws InterruptedException {
-        String body = client.toBlocking().retrieve(HttpRequest.POST("/runs", "body"));
-        Thread.sleep(5000);
-        assertEquals(RunStatus.DONE, runCache.statuses.get(body));
-        assertEquals("body_calculated", runCache.responses.get(body));
+        String key = client.toBlocking().retrieve(HttpRequest.POST("/runs", "body"));
+        RunStatus runStatus = RunStatus.UNKNOWN;
+        while (runStatus != RunStatus.DONE) {
+            runStatus = client.toBlocking().retrieve(HttpRequest.GET("/runs/" + key + "/status"), RunStatus.class);
+            Thread.sleep(500);
+        }
+        String response = client.toBlocking().retrieve(HttpRequest.GET("/runs/" + key), String.class);
+        assertEquals("body_calculated", response);
     }
 }

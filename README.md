@@ -73,3 +73,6 @@ conda install -c conda-forge pika
 ```
 sbin/rabbitmq-server
 ```
+
+## r-streams
+Run kafka-task through rest-api.
