@@ -5,6 +5,7 @@
 [Когда стандарта HTTP мало. Коммитим в Micronaut](https://habr.com/ru/company/yandex/blog/466917/)
 https://micronaut-projects.github.io/micronaut-kafka/latest/guide/index.html
 https://docs.micronaut.io/snapshot/guide/index.html#introduction
+https://programmer.help/blogs/using-kafka-in-micronaut-micro-services.html
 ---
 sdkman
 https://sdkman.io/install
@@ -23,4 +24,11 @@ mn create-app hello-world
 ---
 https://micronaut-projects.github.io/micronaut-kafka/latest/guide/#introduction
 mn create-app my-kafka-app --features kafka
+
+https://docs.micronaut.io/snapshot/guide/index.html#qualifiers
+---
+https://livy.apache.org/docs/latest/rest-api.html
+---
+https://piotrminkowski.wordpress.com/2019/10/09/part-1-testing-kafka-microservices-with-micronaut/
+https://piotrminkowski.com/2019/10/09/part-1-testing-kafka-microservices-with-micronaut/
 ---
