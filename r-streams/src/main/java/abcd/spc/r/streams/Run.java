@@ -2,7 +2,7 @@ package abcd.spc.r.streams;
 
 public class Run {
     private String key;
-    private String type;
+    private RunType type;
     private String responseKey;
     private String body;
 
@@ -14,11 +14,11 @@ public class Run {
         this.key = key;
     }
 
-    public String getType() {
+    public RunType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(RunType type) {
         this.type = type;
     }
 
@@ -41,7 +41,7 @@ public class Run {
     public Run() {
     }
 
-    public Run(String key, String type, String responseKey, String body) {
+    public Run(String key, RunType type, String responseKey, String body) {
         this.key = key;
         this.type = type;
         this.responseKey = responseKey;

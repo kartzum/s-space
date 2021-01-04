@@ -34,7 +34,7 @@ public class RunTest {
     void test() throws InterruptedException {
         String body = client.toBlocking().retrieve(HttpRequest.POST("/runs", "body"));
         Thread.sleep(5000);
-        assertEquals("done", runCache.statuses.get(body));
+        assertEquals(RunStatus.DONE, runCache.statuses.get(body));
         assertEquals("body_calculated", runCache.responses.get(body));
     }
 }

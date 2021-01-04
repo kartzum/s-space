@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 public class RunCache {
-    Map<String, String> statuses = new ConcurrentHashMap<>();
+    Map<String, RunStatus> statuses = new ConcurrentHashMap<>();
 
     Map<String, String> responses = new ConcurrentHashMap<>();
 }
