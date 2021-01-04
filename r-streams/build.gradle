@@ -26,6 +26,10 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.kafka:micronaut-kafka")
     runtimeOnly("ch.qos.logback:logback-classic")
+
+    testImplementation("org.apache.kafka:kafka-clients:2.6.0:test")
+    testImplementation("org.apache.kafka:kafka_2.12:2.6.0")
+    testImplementation("org.apache.kafka:kafka_2.12:2.6.0:test")
 }
 
 
