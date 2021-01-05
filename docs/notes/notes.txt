@@ -34,4 +34,7 @@ https://piotrminkowski.com/2019/10/09/part-1-testing-kafka-microservices-with-mi
 ---
 Testcontainers
 https://blog.javapapo.com/posts/2020/10/10/
+https://github.com/ilopmar/micronaut-testing-best-practices
+https://medium.com/@acetrike/testcontainers-micronaut-kafka-6524e0122e16
+https://github.com/gAmUssA/testcontainers-java-module-confluent-platform
 ---

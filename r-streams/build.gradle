@@ -30,6 +30,9 @@ dependencies {
     testImplementation("org.apache.kafka:kafka-clients:2.6.0:test")
     testImplementation("org.apache.kafka:kafka_2.12:2.6.0")
     testImplementation("org.apache.kafka:kafka_2.12:2.6.0:test")
+
+    implementation("org.projectlombok:lombok:1.18.12")
+    implementation("org.testcontainers:kafka:1.14.3")
 }
 
 
