@@ -32,3 +32,6 @@ https://livy.apache.org/docs/latest/rest-api.html
 https://piotrminkowski.wordpress.com/2019/10/09/part-1-testing-kafka-microservices-with-micronaut/
 https://piotrminkowski.com/2019/10/09/part-1-testing-kafka-microservices-with-micronaut/
 ---
+Testcontainers
+https://blog.javapapo.com/posts/2020/10/10/
+---
