@@ -46,4 +46,8 @@ https://start.spring.io/
 https://spring.io/guides/gs/spring-boot/#initial
 ---
 https://www.baeldung.com/spring-boot-kafka-testing
+https://spring.io/guides/gs/testing-web/
+https://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
+https://developer.okta.com/blog/2019/03/28/test-java-spring-boot-junit5
+https://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
 ---
