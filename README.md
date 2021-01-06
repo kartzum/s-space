@@ -75,4 +75,8 @@ sbin/rabbitmq-server
 ```
 
 ## r-streams
-Run kafka-task through rest-api.
+Run kafka-task through rest-api (micronaut).
+
+## s-streams
+Run kafka-task through rest-api (Spring Boot).
+

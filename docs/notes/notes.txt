@@ -38,3 +38,7 @@ https://github.com/ilopmar/micronaut-testing-best-practices
 https://medium.com/@acetrike/testcontainers-micronaut-kafka-6524e0122e16
 https://github.com/gAmUssA/testcontainers-java-module-confluent-platform
 ---
+Spring Boot
+---
+https://start.spring.io/
+---
