@@ -24,7 +24,7 @@ import java.util.Map;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@Import(abcd.spc.sstreams.sg.RunTcTest.KafkaTestContainersConfiguration.class)
+@Import(abcd.spc.sstreams.sg.RunTcTest.RunTcTestConfiguration.class)
 public class RunTcTest extends RunBase {
     @ClassRule
     public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.5.3"));
@@ -45,7 +45,13 @@ public class RunTcTest extends RunBase {
     }
 
     @TestConfiguration
-    static class KafkaTestContainersConfiguration {
+    static class RunTcTestConfiguration {
+        @Autowired
+        private RunCache runCache;
+
+        @Autowired
+        private RunClient runClient;
+
         @Bean
         ConcurrentKafkaListenerContainerFactory<Integer, String> kafkaListenerContainerFactory() {
             ConcurrentKafkaListenerContainerFactory<Integer, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -81,6 +87,14 @@ public class RunTcTest extends RunBase {
         @Bean
         public KafkaTemplate<String, String> kafkaTemplate() {
             return new KafkaTemplate<>(producerFactory());
+        }
+
+        @Bean
+        public RunCalculator runCalculator() {
+            RunCalculatorWithWork runCalculatorWithWork = new RunCalculatorWithWork();
+            runCalculatorWithWork.runCache = runCache;
+            runCalculatorWithWork.runClient = runClient;
+            return runCalculatorWithWork;
         }
     }
 }

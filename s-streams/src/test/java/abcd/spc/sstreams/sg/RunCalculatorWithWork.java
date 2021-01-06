@@ -8,10 +8,10 @@ import java.util.UUID;
 @Component
 public class RunCalculatorWithWork implements RunCalculator {
     @Autowired
-    private RunClient runClient;
+    RunClient runClient;
 
     @Autowired
-    private RunCache runCache;
+    RunCache runCache;
 
     @Override
     public void run(String key, Run run) {
