@@ -1,4 +1,6 @@
 ---
+micronaut
+---
 [micronaut](https://micronaut.io/index.html)
 [Введение в Micronaut Framework](https://habr.com/ru/post/418117/)
 [Пробуем Micronaut или Дорогая, я уменьшил фреймворк](https://habr.com/ru/post/427595/)
@@ -41,4 +43,7 @@ https://github.com/gAmUssA/testcontainers-java-module-confluent-platform
 Spring Boot
 ---
 https://start.spring.io/
+https://spring.io/guides/gs/spring-boot/#initial
+---
+https://www.baeldung.com/spring-boot-kafka-testing
 ---
