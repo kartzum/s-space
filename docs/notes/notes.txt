@@ -68,3 +68,5 @@ sbt new playframework/play-scala-seed.g8
 sbt run
 http://localhost:9000/
 ---
+https://alvinalexander.com/scala/how-to-write-play-framework-http-post-request-json-web-service/
+---

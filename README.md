@@ -74,9 +74,16 @@ conda install -c conda-forge pika
 sbin/rabbitmq-server
 ```
 
+## tc-streams.
+testcontainers examples.
+
 ## r-streams
 Run kafka-task through rest-api (micronaut).
 
 ## s-streams
 Run kafka-task through rest-api (Spring Boot).
+
+## pf-streams
+Run kafka-task through rest-api (Play).
+
 

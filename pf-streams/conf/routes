@@ -8,3 +8,7 @@ GET     /                           controllers.HomeController.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+POST    /runs                       controllers.RunController.runs
+GET     /runs/:key/status           controllers.RunController.getRunStatus
+GET     /runs/:key                  controllers.RunController.getRunResponse
