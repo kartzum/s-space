@@ -1,4 +1,8 @@
 ---
+fastapi
+---
+https://fastapi.tiangolo.com/
+---
 micronaut
 ---
 [micronaut](https://micronaut.io/index.html)
@@ -50,4 +54,17 @@ https://spring.io/guides/gs/testing-web/
 https://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
 https://developer.okta.com/blog/2019/03/28/test-java-spring-boot-junit5
 https://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
+---
+https://habr.com/ru/company/jugru/blog/499408/
+---
+playframework
+---
+https://www.playframework.com/getting-started
+https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Mac.html
+brew install sbt
+sdk install sbt
+---
+sbt new playframework/play-scala-seed.g8
+sbt run
+http://localhost:9000/
 ---
