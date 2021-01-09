@@ -48,6 +48,7 @@ Spring Boot
 ---
 https://start.spring.io/
 https://spring.io/guides/gs/spring-boot/#initial
+https://spring.io/projects/spring-kafka
 ---
 https://www.baeldung.com/spring-boot-kafka-testing
 https://spring.io/guides/gs/testing-web/
